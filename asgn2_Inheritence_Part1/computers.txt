@@ -1,2 +1,0 @@
-S|1|Which processor company makes the R5 3600|AMD
-S|1|Which processor company makes the i7 9700k|Intel

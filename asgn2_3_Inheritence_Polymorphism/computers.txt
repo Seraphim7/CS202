@@ -1,0 +1,13 @@
+S?1|Which p<>rocessor company makes the R5 3600|AMD
+t|3|Intel makes the i7 9700k chip|True
+M|2|Which processor was made first|R5 3600:i7 9700k:i7 7700k:R3 2200g|C
+????    ??!   |
+hsdfsdfsffgjdgdgjgkdsgldjgk
+M|6|AMD makes which CPU|i9 9900k:R9 3900x:i9 10980xe:i7 7700k|bC
+
+t|12|Intel ma	kes the i7 9700k chip|True
+# the cat
+
+S||Which processor|AMD         
+S|4|Blah|Blah:Bax|C
+ t|AMD|2|C 

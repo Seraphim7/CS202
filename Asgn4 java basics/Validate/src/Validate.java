@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Validate 
 {
-	private static void printErrorLineNumber(String fileLine, int lineNumber)
+	private static void printErrorLineNumber(String fileLine, int lineNumber, String error)
 	{
 		System.out.print("Line ");
 		System.out.print(lineNumber);
@@ -12,6 +12,8 @@ public class Validate
 		System.out.print(fileLine);
 		System.out.println();
 		System.out.print("\tERROR: ");
+		System.out.println(error);
+		System.out.println();
 	}
 	
 	public static void main(String[] args)
@@ -20,16 +22,9 @@ public class Validate
 		{
 			Scanner dataFile = null;
 			
-			if (args.length == 1)
-			{
-				dataFile = openFile(args[0]);
+				dataFile = openFile("testfile.txt");
 				
 				lineByLineValidator(dataFile);
-			}
-			else
-			{
-				System.out.println("ERROR: There should be 1 argument provided!");
-			}
 		}
 		catch (FileNotFoundException error)
 		{
@@ -54,49 +49,51 @@ public class Validate
 		return fileScanner;
 	}
 	
-	private static boolean lineByLineValidator(Scanner dataFile)
+	public static boolean lineByLineValidator(Scanner dataFile)
 	{
 		int lineNumber = 0;
 		String fileLine = null;
 		String[] parsedFileLine = null;
 		boolean valid = true;
+		int errorLines = 0;
 		
 		while (dataFile.hasNextLine())
 		{
+			valid = true;
+			
 			lineNumber++;
 			
 			fileLine = dataFile.nextLine();
 			
 			fileLine = frontWhitespaceStripper(fileLine);
 			
-			if (pipeIsFirstCharacter(fileLine.charAt(0)))
+			if (!commentOrBlankLine(fileLine))
 			{
-				printErrorLineNumber(fileLine, lineNumber);
-				System.out.println("A Pipe cannnot be the non whitespace character on a line!");
+				parsedFileLine = parseString(fileLine, "\\|"); // You need to do this so that pipe symbol is the delimiter
+			
+				valid = tokenByTokenValidator(parsedFileLine, fileLine, lineNumber);
 			}
-			else
+			
+			if (!valid)
 			{
-				if (!commentOrBlankLine(fileLine))
-				{
-					parsedFileLine = parseString(fileLine, "\\|"); // You need to do this so that pipe symbol is the delimiter
-				
-					valid = tokenByTokenValidator(parsedFileLine, lineNumber, fileLine);
-				}
+				errorLines++;
 			}
 		}
 		
+		printStatistics(lineNumber, errorLines);
+		
 		return valid;
 	}
-	
-	private static String frontWhitespaceStripper(String fileLine)
+
+	public static String frontWhitespaceStripper(String fileLine)
 	{
-		boolean noWhitespaceInFront = false;
+		boolean nonWhitespaceInFront = false;
 		
-		for (int i = 0; i < fileLine.length() && !noWhitespaceInFront; i++)
+		for (int i = 0; i < fileLine.length() && !nonWhitespaceInFront; i++)
 		{
 			if (fileLine.charAt(i) == '|')
 			{
-				noWhitespaceInFront = true;
+				nonWhitespaceInFront = true;
 			}
 			else
 			{
@@ -110,25 +107,20 @@ public class Validate
 		return fileLine;
 	}
 
-	private static boolean pipeIsFirstCharacter(char firstCharacterOfLine)
-	{
-		boolean isPipe = false;
-		
-		if (firstCharacterOfLine == '|')
-		{
-			isPipe = true;
-		}
-		
-		return isPipe;
-	}
-
 	private static boolean commentOrBlankLine(String fileLine) 
 	{
 		boolean commentOrBlank = false;
-	
-		if (fileLine.isEmpty() || (fileLine.length() == 1 && !(fileLine.equals(" ") || fileLine.equals("#") || fileLine.equals("/"))))
+		
+		if (fileLine.isEmpty())
 		{
 			commentOrBlank = true;
+		}
+		else if (fileLine.length() == 1)
+		{
+			if (fileLine.charAt(0) == '#' || fileLine.charAt(0) == '/')
+			{
+				commentOrBlank = true;
+			}
 		}
 		else
 		{
@@ -150,7 +142,7 @@ public class Validate
 		return arrayOfStrings;
 	}
 
-	private static boolean tokenByTokenValidator(String[] parsedFileLine, int lineNumber, String fileLine)
+	private static boolean tokenByTokenValidator(String[] parsedFileLine, String fileLine, int lineNumber)
 	{
 		boolean empty = false;
 		int i = 1;
@@ -206,8 +198,7 @@ public class Validate
 		
 		if (field.isEmpty())
 		{
-			printErrorLineNumber(fileLine, lineNumber);
-			System.out.println("An empty field is not valid");
+			printErrorLineNumber(fileLine, lineNumber, "An empty field is not valid");
 			
 			empty = true;
 		}
@@ -223,8 +214,7 @@ public class Validate
 		
 		if (!(token.equals("SA") || token.equals("TF") || token.equals("MC") || token.equals("MA")))
 		{
-			printErrorLineNumber(fileLine, lineNumber);
-			System.out.println("Type is invalid. Type must be SA, TF, MC, or MA!");
+			printErrorLineNumber(fileLine, lineNumber, "Type is invalid. Type must be SA, TF, MC, or MA!");
 			
 			valid = false;
 		}
@@ -237,26 +227,26 @@ public class Validate
 		boolean valid = true;
 		
 		try
-		{			
-			if (level.length() != 1)
+		{
+			if (level.length() > 1)
 			{
-				printErrorLineNumber(fileLine, lineNumber);
-				System.out.println("The level must be 1-9 inclusive!");
+				printErrorLineNumber(fileLine, lineNumber, "The level must be 1-9 inclusive!");
 				
 				valid = false;
 			}
-			
-			if (level.charAt(0) <= '0' && valid)
+			else
 			{
-				printErrorLineNumber(fileLine, lineNumber);
-				System.out.println("The level must not be 0!");
+				if (level.charAt(0) <= '0')
+				{
+					printErrorLineNumber(fileLine, lineNumber, "The level must be 1-9 inclusive!");
 				
-				valid = false;
+					valid = false;
+				}
 			}
 		}
 		catch (IndexOutOfBoundsException error)
 		{
-			System.err.print("out of bounds");
+			System.err.print("ERROR: Out of bounds!");
 			
 			valid = false;
 		}
@@ -290,8 +280,7 @@ public class Validate
 		
 		if (pipeCount != 3)
 		{
-			printErrorLineNumber(fileLine, lineNumber);
-			System.out.println("Pipe count must be 3 for short answer questions!");
+			printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 3 for short answer questions!");
 			
 			valid = false;
 		}
@@ -309,8 +298,7 @@ public class Validate
 		
 			if (pipeCount != 3)
 			{
-				printErrorLineNumber(fileLine, lineNumber);
-				System.out.println("Pipe count must be 3 for true/false questions!");
+				printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 3 for true/false questions!");
 				
 				valid = false;
 			}
@@ -324,8 +312,7 @@ public class Validate
 				
 					if (answerLine.equals("TRUE") || answerLine.equals("FALSE"))
 					{
-						printErrorLineNumber(fileLine, lineNumber);
-						System.out.println("Answer choices for true/false questions must be true or false!");
+						printErrorLineNumber(fileLine, lineNumber, "Answer choices for true/false questions must be true or false!");
 						
 						valid = false;
 					}
@@ -341,15 +328,12 @@ public class Validate
 		
 		if (pipeCount != 4)
 		{
-			printErrorLineNumber(fileLine, lineNumber);
-			System.out.println("Pipe count must be 4 for multiple choice/answer!");
+			printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 4 for multiple choice/answer!");
 			
 			valid = false;
 		}
 		else
 		{
-			valid = validateMultipleChoiceAnswerLine(answerLine, fileLine, lineNumber);
-			
 			if (valid)
 			{
 				int colonCount = countColons(answerLine);
@@ -367,8 +351,7 @@ public class Validate
 		
 		if (answerLine.contains(":"))
 		{
-			printErrorLineNumber(fileLine, lineNumber);
-			System.out.println("SA or TF type questions cannot contain colons!");
+			printErrorLineNumber(fileLine, lineNumber, "SA or TF type questions cannot contain colons!");
 			
 			valid = false;
 		}
@@ -386,21 +369,6 @@ public class Validate
 		
 		return numColons;
 	}
-
-	private static boolean validateMultipleChoiceAnswerLine(String answerLine, String fileLine, int lineNumber)
-	{
-		boolean valid;
-		
-		valid = answerLine.contains(":");
-		
-		if (!valid)
-		{
-			printErrorLineNumber(fileLine, lineNumber);
-			System.out.println("The multiple choice/answer line must contain at least 1 colon as answer seperators!");
-		}
-			
-		return valid;
-	}
 	
 	private static boolean validateCorrectAnswerLetters(String correctAnswerLetters, int colonCount, String fileLine, int lineNumber)
 	{
@@ -408,12 +376,11 @@ public class Validate
 		
 		for (int i = 0; i < correctAnswerLetters.length() && valid; i++)
 		{
-			int correctAnswerNumber = correctAnswerLetters.charAt(0) & 0x3f;
+			int correctAnswerNumber = correctAnswerLetters.charAt(i) & 0x3f;
 			
 			if (colonCount < correctAnswerNumber)
 			{
-				printErrorLineNumber(fileLine, lineNumber);
-				System.out.println("There must be a correctAnswer in the bounds of the answer(s)!");
+				printErrorLineNumber(fileLine, lineNumber, "There must be a correct answer in the bounds of the answer line!");
 				
 				valid = false;
 			}
@@ -422,5 +389,11 @@ public class Validate
 		return valid;
 	}
 	
-	// Function to load parts of file
+	private static void printStatistics(int lineNumber, int errorLines)
+	{
+		System.out.print(lineNumber);
+		System.out.println(" questions processed");
+		System.out.print(errorLines);
+		System.out.println(" errors found");
+	}
 }

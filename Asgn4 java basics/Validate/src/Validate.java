@@ -58,7 +58,7 @@ public class Validate
 		String type = null;
 		String answerToken = null;
 		String correctAnswerToken = null;
-		int pipeCount = 0;
+		int pipeCount = -1;
 		
 		for (String token: parsedFileLine)
 		{
@@ -67,10 +67,6 @@ public class Validate
 			if (empty)
 			{
 				valid = false;
-			}
-			else
-			{
-				valid = true;
 			}
 			
 			if (i == 1 && valid)
@@ -108,11 +104,11 @@ public class Validate
 	{
 		boolean valid = true;
 		
-		if (type == "SA")
+		if (type.equals("SA"))
 		{
 			valid = shortAnswer(answerToken, pipeCount);
 		}
-		else if (type == "TF")
+		else if (type.equals("TF"))
 		{
 			valid = trueFalse(answerToken, pipeCount);
 		}
@@ -196,7 +192,7 @@ public class Validate
 				{
 					answerLine.toUpperCase();
 				
-					if (answerLine != "TRUE" && answerLine != "FALSE")
+					if (answerLine.equals("TRUE") || answerLine.equals("FALSE"))
 					{
 						System.out.println("ERROR Line 187: Answer choices for true/false questions must be true or false!");
 						
@@ -223,8 +219,6 @@ public class Validate
 	public static boolean multipleChoiceAnswer(String answerLine, String correctAnswerLine, int pipeCount)
 	{
 		boolean valid = true;
-		
-		System.out.print(pipeCount);
 		
 		if (pipeCount != 4)
 		{
@@ -253,10 +247,7 @@ public class Validate
 		
 		String[] tokens = words.split("\\:");
 		
-		for (String answers : tokens)
-		{
-			numColons++;
-		}
+		numColons = tokens.length;
 		
 		return numColons;
 	}
@@ -311,9 +302,9 @@ public class Validate
 		
 		for (int i = 0; i < correctAnswerLetters.length() && valid; i++)
 		{
-			int correctAnswerNumber = (int) correctAnswerLetters.indexOf(i);
+			int correctAnswerNumber = correctAnswerLetters.charAt(0) & 0x3f;
 			
-			if (colonCount != correctAnswerNumber)
+			if (colonCount < correctAnswerNumber)
 			{
 				System.out.println("ERROR Line 293: There must be a correctAnswer in the bounds of the answer(s)");
 				

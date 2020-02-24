@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Validate 
+public class Validate
 {
 	private static void printErrorLineNumber(String fileLine, int lineNumber, String error)
 	{
@@ -206,7 +206,6 @@ public class Validate
 		if (field.isEmpty())
 		{
 			printErrorLineNumber(fileLine, lineNumber, "An empty field is not valid");
-			
 			empty = true;
 		}
 		
@@ -222,7 +221,6 @@ public class Validate
 		if (!(token.equals("SA") || token.equals("TF") || token.equals("MC") || token.equals("MA")))
 		{
 			printErrorLineNumber(fileLine, lineNumber, "Type is invalid. Type must be SA, TF, MC, or MA!");
-			
 			valid = false;
 		}
 		
@@ -238,7 +236,6 @@ public class Validate
 			if (level.length() > 1)
 			{
 				printErrorLineNumber(fileLine, lineNumber, "The level must be 1-9 inclusive!");
-				
 				valid = false;
 			}
 			else
@@ -246,7 +243,6 @@ public class Validate
 				if (level.charAt(0) <= '0')
 				{
 					printErrorLineNumber(fileLine, lineNumber, "The level must be 1-9 inclusive!");
-				
 					valid = false;
 				}
 			}
@@ -254,7 +250,6 @@ public class Validate
 		catch (IndexOutOfBoundsException error)
 		{
 			System.err.print("ERROR: Out of bounds!");
-			
 			valid = false;
 		}
 		
@@ -290,7 +285,6 @@ public class Validate
 		if (pipeCount != 3)
 		{
 			printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 3 for short answer questions!");
-			
 			valid = false;
 		}
 		else
@@ -305,31 +299,29 @@ public class Validate
 	{
 		boolean valid = true;
 		
-			if (pipeCount != 3)
-			{
-				printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 3 for true/false questions!");
+		if (pipeCount != 3)
+		{
+			printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 3 for true/false questions!");
+			valid = false;
+		}
+		else
+		{
+			valid = validateTrueShortAnswerLine(answerLine, fileLine, lineNumber);
 				
-				valid = false;
-			}
-			else
+			if (valid)
 			{
-				valid = validateTrueShortAnswerLine(answerLine, fileLine, lineNumber);
+				answerLine = answerLine.toUpperCase();
 				
-				if (valid)
+				if (!(answerLine.equals("TRUE") || answerLine.equals("FALSE")))
 				{
-					answerLine.toUpperCase();
-				
-					if (answerLine.equals("TRUE") || answerLine.equals("FALSE"))
-					{
-						printErrorLineNumber(fileLine, lineNumber, "Answer choices for true/false questions must be true or false!");
-						
-						valid = false;
-					}
+					printErrorLineNumber(fileLine, lineNumber, "Answer choices for true/false questions must be true or false!");
+					valid = false;
 				}
 			}
-			
-			return valid;
 		}
+			
+		return valid;
+	}
 	
 	public static boolean multipleChoiceAnswer(String answerLine, String correctAnswerLine, int pipeCount, String fileLine, int lineNumber)
 	{
@@ -338,7 +330,6 @@ public class Validate
 		if (pipeCount != 4)
 		{
 			printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 4 for multiple choice/answer!");
-			
 			valid = false;
 		}
 		else
@@ -347,7 +338,12 @@ public class Validate
 			{
 				int colonCount = countColons(answerLine);
 				
-				valid = validateCorrectAnswerLetters(correctAnswerLine, colonCount, fileLine, lineNumber);
+				valid = isLessThanTwoAnswers(colonCount, fileLine, lineNumber);
+				
+				if (valid)
+				{
+					valid = validateCorrectAnswerLetters(correctAnswerLine, colonCount, fileLine, lineNumber);
+				}
 			}
 		}
 		
@@ -361,7 +357,6 @@ public class Validate
 		if (answerLine.contains(":"))
 		{
 			printErrorLineNumber(fileLine, lineNumber, "SA or TF type questions cannot contain colons!");
-			
 			valid = false;
 		}
 		
@@ -379,6 +374,19 @@ public class Validate
 		return numColons;
 	}
 	
+	private static boolean isLessThanTwoAnswers(int colonCount, String fileLine, int lineNumber)
+	{
+		boolean valid = true;
+		
+		if (colonCount < 2)
+		{
+			printErrorLineNumber(fileLine, lineNumber);
+			valid = false;
+		}
+		
+		return valid;
+	}
+	
 	private static boolean validateCorrectAnswerLetters(String correctAnswerLetters, int colonCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
@@ -390,7 +398,6 @@ public class Validate
 			if (colonCount < correctAnswerNumber)
 			{
 				printErrorLineNumber(fileLine, lineNumber, "There must be a correct answer in the bounds of the answer line!");
-				
 				valid = false;
 			}
 		}

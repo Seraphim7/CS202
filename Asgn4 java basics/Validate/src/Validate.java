@@ -20,11 +20,18 @@ public class Validate
 	{
 		try
 		{
-			Scanner dataFile = null;
-			
-				dataFile = openFile("testfile.txt");
+			if (args.length == 1)
+			{
+				Scanner dataFile = null;
+				
+				dataFile = openFile(args[0]);
 				
 				lineByLineValidator(dataFile);
+			}
+			else
+			{
+				System.out.println("ERROR: There should be 1 argument provided!");
+			}
 		}
 		catch (FileNotFoundException error)
 		{
@@ -257,6 +264,8 @@ public class Validate
 	private static boolean questionValidatorBasedOnType(String type, String answerToken, String correctAnswerToken, int pipeCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
+		
+		type = type.toUpperCase();
 		
 		if (type.equals("SA"))
 		{

@@ -15,7 +15,7 @@ public class Validate
 	
 		@param fileLine, line of the input file
 		@param lineNumber, file line number
-		@param error, the error recieved
+		@param error, the error received
 	*/
 	private static void printErrorLineNumber(String fileLine, int lineNumber, String error)
 	{
@@ -82,7 +82,7 @@ public class Validate
 		
 		@param dataFile, the file
 	*/
-	public static lineByLineValidator(Scanner dataFile)
+	public static void lineByLineValidator(Scanner dataFile)
 	{
 		int lineNumber = 0;
 		String fileLine = null;
@@ -522,7 +522,7 @@ public class Validate
 		
 		if (colonCount < 2)
 		{
-			printErrorLineNumber(fileLine, lineNumber);
+			printErrorLineNumber(fileLine, lineNumber, "There should be at least 2 answers for multiple choice/answer questions");
 			valid = false;
 		}
 		
@@ -530,7 +530,7 @@ public class Validate
 	}
 	
 	/*
-		Validates whether there is a correct answer whithin bounds of answer line
+		Validates whether there is a correct answer within bounds of answer line
 		
 		@param correctAnswerLetters, correct answer letters token within file line
 		@param colonCount, number of colons

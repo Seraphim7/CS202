@@ -2,7 +2,7 @@
 // Filename: Validate.java which contains what is needed to validate a file
 // CS202 asgn4 "Java basics"
 //
-// This file contains some print functions, validation, and Main
+// This file contains some print functions, validation, and main
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,9 +1,22 @@
+// Author: Alex Novitchkov
+// Filename: Validate.java which contains what is needed to validate a file
+// CS202 asgn4 "Java basics"
+//
+// This file contains some print functions, validation, and main
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Validate 
+public class Validate
 {
+	/*
+		Prints error information such as the line number and the file line
+	
+		@param fileLine, line of the input file
+		@param lineNumber, file line number
+		@param error, the error received
+	*/
 	private static void printErrorLineNumber(String fileLine, int lineNumber, String error)
 	{
 		System.out.print("Line ");
@@ -16,6 +29,7 @@ public class Validate
 		System.out.println();
 	}
 	
+	/*---------------------------------------------------------------------------------------------*/
 	public static void main(String[] args)
 	{
 		try
@@ -47,6 +61,13 @@ public class Validate
 		}
 	}
 	
+	/*
+		Opens the file
+	
+		@param filename, the name of the file to be opened
+	
+		@return Scanner, an objects containing the datafile
+	*/
 	private static Scanner openFile(String filename) throws FileNotFoundException
 	{
 		File dataFile = new File(filename);
@@ -56,7 +77,12 @@ public class Validate
 		return fileScanner;
 	}
 	
-	public static boolean lineByLineValidator(Scanner dataFile)
+	/*
+		Validates the file line by line
+		
+		@param dataFile, the file
+	*/
+	public static void lineByLineValidator(Scanner dataFile)
 	{
 		int lineNumber = 0;
 		String fileLine = null;
@@ -88,19 +114,24 @@ public class Validate
 		}
 		
 		printStatistics(lineNumber, errorLines);
-		
-		return valid;
 	}
 
+	/*
+		strips whitespace from the front of the fileLine (type)
+		
+		@param fileLine, line in the file
+		
+		@return String, a stripped down version of fileLine
+	*/
 	public static String frontWhitespaceStripper(String fileLine)
 	{
-		boolean nonWhitespaceInFront = false;
+		boolean whitespaceInFront = true;
 		
-		for (int i = 0; i < fileLine.length() && !nonWhitespaceInFront; i++)
+		for (int i = 0; i < fileLine.length() && whitespaceInFront; i++)
 		{
 			if (fileLine.charAt(i) == '|')
 			{
-				nonWhitespaceInFront = true;
+				whitespaceInFront = false;
 			}
 			else
 			{
@@ -114,13 +145,20 @@ public class Validate
 		return fileLine;
 	}
 
+	/*
+		Checks whether line is a comment or a blank line
+		
+		@param fileLine, a line in the file
+		
+		@return boolean, whether it is a comment or blank line
+	*/
 	private static boolean commentOrBlankLine(String fileLine) 
 	{
 		boolean commentOrBlank = false;
 		
 		if (fileLine.isEmpty())
 		{
-			commentOrBlank = true;
+			return true;
 		}
 		else if (fileLine.length() == 1)
 		{
@@ -140,6 +178,14 @@ public class Validate
 		return commentOrBlank;
 	}
 	
+	/*
+		Parses a string, the fileLine in this case
+		
+		@param StringToParse, the string to parse
+		@param token, delimiter for parsing
+		
+		@return String[], delimited string[]
+	*/
 	public static String[] parseString(String stringToParse, String token)
 	{
 		String[] arrayOfStrings;
@@ -149,6 +195,15 @@ public class Validate
 		return arrayOfStrings;
 	}
 
+	/*
+		Validates a file line, token by token
+		
+		@param parsedFileLine, file line delimited by a character
+		@param fileLine, a line in the file (not in parts)
+		@param lineNumber, the file line number
+		
+		@return boolean if file line is valid
+	*/
 	private static boolean tokenByTokenValidator(String[] parsedFileLine, String fileLine, int lineNumber)
 	{
 		boolean empty = false;
@@ -165,10 +220,10 @@ public class Validate
 			
 			if (empty)
 			{
-				valid = false;
+				return false;
 			}
 			
-			if (i == 1 && valid)
+			if (i == 1)
 			{
 				valid = checkType(token, fileLine, lineNumber);
 				
@@ -199,6 +254,15 @@ public class Validate
 		return valid;
 	}
 	
+	/*
+		Checks if a line has an empty field
+		
+		@param field, one field in the fileLine
+		@param fileLine, the whole fileLine
+		@param lineNumber, the file line number
+		
+		@return boolean if field is empty or not
+	*/
 	private static boolean emptyFields(String field, String fileLine, int lineNumber)
 	{
 		boolean empty = false;
@@ -206,13 +270,21 @@ public class Validate
 		if (field.isEmpty())
 		{
 			printErrorLineNumber(fileLine, lineNumber, "An empty field is not valid");
-			
 			empty = true;
 		}
 		
 		return empty;
 	}
 	
+	/*
+		Checks the file line type
+		
+		@param token, type
+		@param fileLine, a line in the file
+		@param lineNumber, file line number
+		
+		@return boolean if type is valid or not
+	*/
 	private static boolean checkType(String token, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
@@ -222,13 +294,19 @@ public class Validate
 		if (!(token.equals("SA") || token.equals("TF") || token.equals("MC") || token.equals("MA")))
 		{
 			printErrorLineNumber(fileLine, lineNumber, "Type is invalid. Type must be SA, TF, MC, or MA!");
-			
 			valid = false;
 		}
 		
 		return valid;
 	}
 	
+	/*
+		Checks if the level number is valid
+		
+		@param level, the level field
+		@param fileLine, a line in the file
+		@param lineNumber, the file line number
+	*/
 	private static boolean validateLevelNumber(String level, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
@@ -238,7 +316,6 @@ public class Validate
 			if (level.length() > 1)
 			{
 				printErrorLineNumber(fileLine, lineNumber, "The level must be 1-9 inclusive!");
-				
 				valid = false;
 			}
 			else
@@ -246,7 +323,6 @@ public class Validate
 				if (level.charAt(0) <= '0')
 				{
 					printErrorLineNumber(fileLine, lineNumber, "The level must be 1-9 inclusive!");
-				
 					valid = false;
 				}
 			}
@@ -254,13 +330,24 @@ public class Validate
 		catch (IndexOutOfBoundsException error)
 		{
 			System.err.print("ERROR: Out of bounds!");
-			
 			valid = false;
 		}
 		
 		return valid;
 	}
 
+	/*
+		Validates the question based on the type
+		
+		@param type, type of question
+		@param answerToken, answer field
+		@param correctAnswerToken, correct answer field
+		@param pipeCount, line separator count
+		@param fileLine, a line in the file
+		@param lineNumber, the file line number
+		
+		@return boolean, whether question is valid
+	*/
 	private static boolean questionValidatorBasedOnType(String type, String answerToken, String correctAnswerToken, int pipeCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
@@ -283,6 +370,15 @@ public class Validate
 		return valid;
 	}
 	
+	/*
+		Validates a shortAnswer question
+		
+		@param answerLine, answer field
+		@param fileLine, a line in the file
+		@param lineNumber, the file line number
+		
+		@return boolean, if given short answer question is valid
+	*/
 	public static boolean shortAnswer(String answerLine, int pipeCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
@@ -290,7 +386,6 @@ public class Validate
 		if (pipeCount != 3)
 		{
 			printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 3 for short answer questions!");
-			
 			valid = false;
 		}
 		else
@@ -301,36 +396,52 @@ public class Validate
 		return valid;
 	}
 
+	/*
+		Validates a true/false question
+		
+		@param answerLine, answer field
+		@param fileLine, a line in the file
+		@param lineNumber, the file line number
+		
+		@return boolean, if given true/false question is valid
+	*/	
 	public static boolean trueFalse(String answerLine, int pipeCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
-			if (pipeCount != 3)
-			{
-				printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 3 for true/false questions!");
+		if (pipeCount != 3)
+		{
+			printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 3 for true/false questions!");
+			valid = false;
+		}
+		else
+		{
+			valid = validateTrueShortAnswerLine(answerLine, fileLine, lineNumber);
 				
-				valid = false;
-			}
-			else
+			if (valid)
 			{
-				valid = validateTrueShortAnswerLine(answerLine, fileLine, lineNumber);
+				answerLine = answerLine.toUpperCase();
 				
-				if (valid)
+				if (!(answerLine.equals("TRUE") || answerLine.equals("FALSE")))
 				{
-					answerLine.toUpperCase();
-				
-					if (answerLine.equals("TRUE") || answerLine.equals("FALSE"))
-					{
-						printErrorLineNumber(fileLine, lineNumber, "Answer choices for true/false questions must be true or false!");
-						
-						valid = false;
-					}
+					printErrorLineNumber(fileLine, lineNumber, "Answer choices for true/false questions must be true or false!");
+					valid = false;
 				}
 			}
-			
-			return valid;
 		}
+			
+		return valid;
+	}
 	
+	/*
+		Validates a multiple choice/answer question
+	
+		@param answerLine, answer field
+		@param fileLine, a line in the file
+		@param lineNumber, the file line number
+		
+		@return boolean, if given multiple choice/answer question is valid
+	*/
 	public static boolean multipleChoiceAnswer(String answerLine, String correctAnswerLine, int pipeCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
@@ -338,7 +449,6 @@ public class Validate
 		if (pipeCount != 4)
 		{
 			printErrorLineNumber(fileLine, lineNumber, "Pipe count must be 4 for multiple choice/answer!");
-			
 			valid = false;
 		}
 		else
@@ -347,13 +457,27 @@ public class Validate
 			{
 				int colonCount = countColons(answerLine);
 				
-				valid = validateCorrectAnswerLetters(correctAnswerLine, colonCount, fileLine, lineNumber);
+				valid = isLessThanTwoAnswers(colonCount, fileLine, lineNumber);
+				
+				if (valid)
+				{
+					valid = validateCorrectAnswerLetters(correctAnswerLine, colonCount, fileLine, lineNumber);
+				}
 			}
 		}
 		
 		return valid;
 	}
 
+	/*
+		Validate if true/false/short answer is valid
+	
+		@param answerLine, answer field
+		@param fileLine, a line in the file
+		@param lineNumber, the file line number
+		
+		@return boolean, if given true/false/short answer question is valid
+	*/
 	private static boolean validateTrueShortAnswerLine(String answerLine, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
@@ -361,13 +485,19 @@ public class Validate
 		if (answerLine.contains(":"))
 		{
 			printErrorLineNumber(fileLine, lineNumber, "SA or TF type questions cannot contain colons!");
-			
 			valid = false;
 		}
 		
 		return valid;
 	}
 	
+	/*
+		Count colons in line
+	
+		@param words, a piece of a line to count colons from (if any)
+		
+		@return int, number of colons
+	*/
 	private static int countColons(String words)
 	{
 		int numColons = 0;
@@ -379,18 +509,49 @@ public class Validate
 		return numColons;
 	}
 	
+	/*
+		Check whether multiple choice/answer questions have at least two answers
+		
+		@param colonCount, number of colons
+		@param fileLine, a line in the file
+		@param lineNumber, the file line number
+	*/
+	private static boolean isLessThanTwoAnswers(int colonCount, String fileLine, int lineNumber)
+	{
+		boolean valid = true;
+		
+		if (colonCount < 2)
+		{
+			printErrorLineNumber(fileLine, lineNumber, "There should be at least 2 answers for multiple choice/answer questions");
+			valid = false;
+		}
+		
+		return valid;
+	}
+	
+	/*
+		Validates whether there is a correct answer within bounds of answer line
+		
+		@param correctAnswerLetters, correct answer letters token within file line
+		@param colonCount, number of colons
+		@param fileLine, a line in the file
+		@param lineNumber, the file line number
+		
+		@return boolean, whether there exists a correct answer in bounds or not
+	*/
 	private static boolean validateCorrectAnswerLetters(String correctAnswerLetters, int colonCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
 		for (int i = 0; i < correctAnswerLetters.length() && valid; i++)
 		{
-			int correctAnswerNumber = correctAnswerLetters.charAt(i) & 0x3f;
+			correctAnswerLetters = correctAnswerLetters.toUpperCase();
+			
+			int correctAnswerNumber = correctAnswerLetters.charAt(i) & 0x3f; // Converting uppercase letters to number (1 - 9)
 			
 			if (colonCount < correctAnswerNumber)
 			{
 				printErrorLineNumber(fileLine, lineNumber, "There must be a correct answer in the bounds of the answer line!");
-				
 				valid = false;
 			}
 		}
@@ -398,6 +559,12 @@ public class Validate
 		return valid;
 	}
 	
+	/*
+		Prints total question and how many error lines received
+		
+		@param lineNumber, the total number of lines in the file
+		@param errorLines, lines that contain errors
+	*/
 	private static void printStatistics(int lineNumber, int errorLines)
 	{
 		System.out.print(lineNumber);

@@ -131,11 +131,8 @@ public class Validate
 		{
 			if (fileLine.charAt(i) == '|')
 			{
-<<<<<<< HEAD
 				whitespaceInFront = false;
-=======
 				nonWhitespaceInFront = false;
->>>>>>> ba68fcd1cb349a12d71daa736695f3075a5d78e9
 			}
 			else
 			{
@@ -186,15 +183,11 @@ public class Validate
 		Parses a string, the fileLine in this case
 		
 		@param StringToParse, the string to parse
-<<<<<<< HEAD
 		@param token, delimiter for parsing
-		
 		@return String[], delimited string[]
-=======
 		@param token, delimeter for parsing
 		
 		@return String[], delimeted string[]
->>>>>>> ba68fcd1cb349a12d71daa736695f3075a5d78e9
 	*/
 	public static String[] parseString(String stringToParse, String token)
 	{
@@ -208,11 +201,8 @@ public class Validate
 	/*
 		Validates a file line, token by token
 		
-<<<<<<< HEAD
 		@param parsedFileLine, file line delimited by a character
-=======
 		@param parsedFileLine, file line delimeted by a character
->>>>>>> ba68fcd1cb349a12d71daa736695f3075a5d78e9
 		@param fileLine, a line in the file (not in parts)
 		@param lineNumber, the file line number
 		
@@ -356,11 +346,8 @@ public class Validate
 		@param type, type of question
 		@param answerToken, answer field
 		@param correctAnswerToken, correct answer field
-<<<<<<< HEAD
 		@param pipeCount, line separator count
-=======
 		@param pipeCount, line seperator count
->>>>>>> ba68fcd1cb349a12d71daa736695f3075a5d78e9
 		@param fileLine, a line in the file
 		@param lineNumber, the file line number
 		

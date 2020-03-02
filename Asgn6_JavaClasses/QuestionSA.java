@@ -1,6 +1,6 @@
 
 /**
-* <h1>QuestionSA.java</h1>
+* QuestionSA.java
 * Functions dealing with a short answer question
 * <p>
 *

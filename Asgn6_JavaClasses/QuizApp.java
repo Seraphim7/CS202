@@ -2,7 +2,7 @@
 import java.io.FileNotFoundException;
 
 /**
-* <h1>QuizApp.java</h1>
+* QuizApp.java
 * This file is the controller of this quiz program
 * <p>
 *

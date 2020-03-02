@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 /**
-* <h1>Quiz.java</h1>
+* Quiz.java
 * Contains the necessary items for doing various tasks with a quiz
 * such as loadQuestions, lineValidator, and deliverQuiz
 * <p>
@@ -152,7 +152,7 @@ public class Quiz
 	 */
 	public void printCorrect()
 	{
-		System.out.println("Correct good job!");
+		System.out.println("Correct, good job!");
 		System.out.println();
 	}
 	

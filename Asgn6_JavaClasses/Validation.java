@@ -1,6 +1,6 @@
 
 /**
-* <h1>Validation.java</h1>
+* Validation.java
 * Contains validation for the file
 * <p>
 *

@@ -1,6 +1,6 @@
 
 /**
-* <h1>Question.java</h1>
+* Question.java
 * An abstract class for any question type
 * <p>
 *

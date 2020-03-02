@@ -1,6 +1,6 @@
 
 /**
-* <h1>QuestionMC.java</h1>
+* QuestionMC.java
 * Functions dealing with a multiple choice question
 * <p>
 *
@@ -28,7 +28,7 @@ public class QuestionMC extends Question
 		
 		text = question;
 		
-		String[] stringOfAnswers = Utility.splitByDelimeter(answers, "\\:");
+		String[] stringOfAnswers = Utility.splitByDelimiter(answers, "\\:");
 		
 		addAnswerChoicesToQuestion(stringOfAnswers);
 		

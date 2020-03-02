@@ -1,6 +1,6 @@
 
 /**
-* <h1>QuestionTF.java</h1>
+* QuestionTF.java
 * Functions dealing with a true/false question
 * <p>
 *

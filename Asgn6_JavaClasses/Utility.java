@@ -1,6 +1,6 @@
 
 /**
-* <h1>Utility.java</h1>
+* Utility.java
 * Contains utility functions like parseString and frontWhiteSpaceStripper
 * <p>
 *
@@ -14,17 +14,15 @@ public class Utility
 	//------------------------------------------------------------------------
 	/**
 	* Parses a string, the fileLine in this case
-	* @param StringToParse, the string to parse
-	* @param token, delimiter for parsing
-	* @return String[], delimited string[]
-	* @param token, delimiter for parsing
+	* @param stringToParse, the string to parse
+	* @param delimiter, delimiter for parsing
 	* @return String[], delimited string[]
 	*/
-	public static String[] parseString(String fileLine, String delimeter)
+	public static String[] parseString(String stringToParse, String delimiter)
 	{
 		String[] parsedFileLine = null;
 		
-		parsedFileLine = fileLine.split(delimeter);
+		parsedFileLine = stringToParse.split(delimiter);
 		
 		return parsedFileLine;
 	}
@@ -97,10 +95,10 @@ public class Utility
 	/**
 	 * Splits the string based on parameter delimiter
 	 * @param answers, string of answers to split
-	 * @param delimeter, split by
+	 * @param delimiter, split by
 	 * @return String[], array of split answers
 	 */
-	public static String[] splitByDelimeter(String answers, String delimiter)
+	public static String[] splitByDelimiter(String answers, String delimiter)
 	{
 		String[] arrayOfStrings = null;
 		

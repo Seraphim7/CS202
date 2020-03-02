@@ -1,15 +1,26 @@
 
+/**
+* <h1>Validation.java</h1>
+* Contains validation for the file
+* <p>
+*
+* @author  Alex Novitchkov
+* @version 1.0
+* @since   3/2/2020
+*/
+
 public class Validation
 {
-	/*
-	Checks whether line is a comment or a blank line
-		
-	@param fileLine, a line in the file
-		
-	@return boolean, whether it is a comment or blank line
+	//------------------------------------------------------------------------
+	/**
+	* Checks whether line is a comment or a blank line
+	* @param fileLine, a line in the file
+	* @return boolean, whether it is a comment or blank line
 	*/
 	public static boolean commentOrBlankLine(String fileLine) 
 	{
+		/* # and // are the types of comments */
+		
 		boolean commentOrBlank = false;
 		
 		if (fileLine.isEmpty())
@@ -34,15 +45,13 @@ public class Validation
 		return commentOrBlank;
 	}
 	
-	/*
-	Validates a file line, token by token
-	
-	@param parsedFileLine, file line delimited by a character
-	@param parsedFileLine, file line delimited by a character
-	@param fileLine, a line in the file (not in parts)
-	@param lineNumber, the file line number
-	
-	@return boolean if file line is valid
+	//------------------------------------------------------------------------
+	/**
+	* Validates a file line, token by token
+	* @param parsedFileLine, file line delimited by a character
+	* @param fileLine, a line in the file (not in parts)
+	* @param lineNumber, the file line number
+	* @return boolean if file line is valid
 	*/
 	public static boolean tokenByTokenValidator(String[] parsedFileLine, String fileLine, int lineNumber)
 	{
@@ -94,16 +103,8 @@ public class Validation
 		return valid;
 	}
 	
-	/*
-		Checks if a line has an empty field
-		
-		@param field, one field in the fileLine
-		@param fileLine, the whole fileLine
-		@param lineNumber, the file line number
-		
-		@return boolean if field is empty or not
-	*/
-	public static boolean emptyFields(String field, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean emptyFields(String field, String fileLine, int lineNumber)
 	{
 		boolean empty = false;
 		
@@ -116,16 +117,8 @@ public class Validation
 		return empty;
 	}
 	
-	/*
-		Checks the file line type
-		
-		@param token, type
-		@param fileLine, a line in the file
-		@param lineNumber, file line number
-		
-		@return boolean if type is valid or not
-	*/
-	public static boolean checkType(String token, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean checkType(String token, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
@@ -140,14 +133,8 @@ public class Validation
 		return valid;
 	}
 	
-	/*
-		Checks if the level number is valid
-		
-		@param level, the level field
-		@param fileLine, a line in the file
-		@param lineNumber, the file line number
-	*/
-	public static boolean validateLevelNumber(String level, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean validateLevelNumber(String level, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
@@ -176,20 +163,8 @@ public class Validation
 		return valid;
 	}
 	
-	/*
-		Validates the question based on the type
-		
-		@param type, type of question
-		@param answerToken, answer field
-		@param correctAnswerToken, correct answer field
-		@param pipeCount, line separator count
-		@param pipeCount, line separator count
-		@param fileLine, a line in the file
-		@param lineNumber, the file line number
-		
-		@return boolean, whether question is valid
-	*/
-	public static boolean questionValidatorBasedOnType(String type, String answerToken, String correctAnswerToken, int pipeCount, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean questionValidatorBasedOnType(String type, String answerToken, String correctAnswerToken, int pipeCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
@@ -218,16 +193,8 @@ public class Validation
 		return valid;
 	}
 	
-	/*
-	Validates a shortAnswer question
-	
-	@param answerLine, answer field
-	@param fileLine, a line in the file
-	@param lineNumber, the file line number
-	
-	@return boolean, if given short answer question is valid
-	*/
-	public static boolean shortAnswer(String answerLine, int pipeCount, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean shortAnswer(String answerLine, int pipeCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
@@ -244,16 +211,8 @@ public class Validation
 		return valid;
 	}
 	
-	/*
-		Validates a true/false question
-		
-		@param answerLine, answer field
-		@param fileLine, a line in the file
-		@param lineNumber, the file line number
-		
-		@return boolean, if given true/false question is valid
-	*/	
-	public static boolean trueFalse(String answerLine, int pipeCount, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean trueFalse(String answerLine, int pipeCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
@@ -281,16 +240,8 @@ public class Validation
 		return valid;
 	}
 	
-	/*
-		Validates a multiple choice/answer question
-	
-		@param answerLine, answer field
-		@param fileLine, a line in the file
-		@param lineNumber, the file line number
-		
-		@return boolean, if given multiple choice/answer question is valid
-	*/
-	public static boolean multipleChoice(String answerLine, String correctAnswerLine, int pipeCount, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean multipleChoice(String answerLine, String correctAnswerLine, int pipeCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
@@ -317,16 +268,8 @@ public class Validation
 		return valid;
 	}
 	
-	/*
-		Validate if true/false/short answer is valid
-	
-		@param answerLine, answer field
-		@param fileLine, a line in the file
-		@param lineNumber, the file line number
-		
-		@return boolean, if given true/false/short answer question is valid
-	*/
-	public static boolean validateTrueShortAnswerLine(String answerLine, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean validateTrueShortAnswerLine(String answerLine, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
@@ -339,17 +282,8 @@ public class Validation
 		return valid;
 	}
 	
-	/*
-		Validates whether there is a correct answer within bounds of answer line
-		
-		@param correctAnswerLetters, correct answer letters token within file line
-		@param colonCount, number of colons
-		@param fileLine, a line in the file
-		@param lineNumber, the file line number
-		
-		@return boolean, whether there exists a correct answer in bounds or not
-	*/
-	public static boolean validateCorrectAnswerLetter(String correctAnswerLetter, int colonCount, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean validateCorrectAnswerLetter(String correctAnswerLetter, int colonCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
 		
@@ -366,7 +300,8 @@ public class Validation
 		return valid;
 	}
 	
-	public static boolean checkPipeCountGeneral(String fileLine, int lineNumber, int pipeCount)
+	//------------------------------------------------------------------------
+	private static boolean checkPipeCountGeneral(String fileLine, int lineNumber, int pipeCount)
 	{
 		boolean valid = true;
 		
@@ -379,7 +314,8 @@ public class Validation
 		return valid;
 	}
 	
-	public static boolean checkValidMultipleChoiceColonCount(int colonCount, String fileLine, int lineNumber)
+	//------------------------------------------------------------------------
+	private static boolean checkValidMultipleChoiceColonCount(int colonCount, String fileLine, int lineNumber)
 	{
 		if (colonCount < 3 || colonCount > 9)
 		{

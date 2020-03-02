@@ -1,6 +1,22 @@
 
+/**
+* <h1>QuestionSA.java</h1>
+* Functions dealing with a short answer question
+* <p>
+*
+* @author  Alex Novitchkov
+* @version 1.0
+* @since   3/2/2020
+*/
+
 public class QuestionSA extends Question
 {
+	//------------------------------------------------------------------------
+	/**
+	 * Sets the question and answer
+	 * @param question, question text
+	 * @param answer, answer text
+	 */
 	QuestionSA(String question, String answer)
 	{
 		answer = answer.toLowerCase();
@@ -9,16 +25,30 @@ public class QuestionSA extends Question
 		this.answer = answer;
 	}
 	
+	//------------------------------------------------------------------------
+	/**
+	 * Shows the question
+	 */
 	public void showQuestion()
 	{
 		System.out.println(text);
 	}
 	
+	//------------------------------------------------------------------------
+	/**
+	 * Shows the answer
+	 */
 	public void showAnswer()
 	{
 		System.out.println(answer);
 	}
 	
+	//------------------------------------------------------------------------
+	/**
+	 * Checks parameter givenAnswer versus protected member answer
+	 * @param givenAnswer, user inputed answer
+	 * @return whether equal or not
+	 */
 	public boolean checkAnswer(String givenAnswer)
 	{
 		givenAnswer = givenAnswer.toLowerCase();
@@ -31,11 +61,20 @@ public class QuestionSA extends Question
 		return true;
 	}
 	
+	//------------------------------------------------------------------------
+	/**
+	 * Marks whether question was answered correctly
+	 */
 	public void markCorrect()
 	{
 		correct = true;
 	}
 
+	//------------------------------------------------------------------------
+	/**
+	 * Checks whether the question's correct member is true
+	 * @return true or false
+	 */
 	public boolean isCorrect()
 	{
 		if (!correct)

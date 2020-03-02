@@ -1,15 +1,24 @@
 
+/**
+* <h1>Utility.java</h1>
+* Contains utility functions like parseString and frontWhiteSpaceStripper
+* <p>
+*
+* @author  Alex Novitchkov
+* @version 1.0
+* @since   3/2/2020
+*/
+
 public class Utility
 {
-	/*
-	Parses a string, the fileLine in this case
-	
-	@param StringToParse, the string to parse
-	@param token, delimiter for parsing
-	@return String[], delimited string[]
-	@param token, delimiter for parsing
-	
-	@return String[], delimited string[]
+	//------------------------------------------------------------------------
+	/**
+	* Parses a string, the fileLine in this case
+	* @param StringToParse, the string to parse
+	* @param token, delimiter for parsing
+	* @return String[], delimited string[]
+	* @param token, delimiter for parsing
+	* @return String[], delimited string[]
 	*/
 	public static String[] parseString(String fileLine, String delimeter)
 	{
@@ -20,12 +29,12 @@ public class Utility
 		return parsedFileLine;
 	}
 	
-	/*
-	Prints error information such as the line number and the file line
-
-	@param fileLine, line of the input file
-	@param lineNumber, file line number
-	@param error, the error received
+	//------------------------------------------------------------------------
+	/**
+	* Prints error information such as the line number and the file line
+	* @param fileLine, line of the input file
+	* @param lineNumber, file line number
+	* @param error, the error received
 	*/
 	public static void printErrorLineNumber(String fileLine, int lineNumber, String error)
 	{
@@ -39,12 +48,11 @@ public class Utility
 		System.out.println();
 	}
 
-	/*
-	Strips whitespace from the front of the fileLine (type)
-	
-	@param fileLine, line in the file
-	
-	@return String, a stripped down version of fileLine
+	//------------------------------------------------------------------------
+	/**
+	* Strips whitespace from the front of the fileLine (type)
+	* @param fileLine, line in the file
+	* @return String, a stripped down version of fileLine
 	*/
 	public static String frontWhitespaceStripper(String fileLine)
 	{
@@ -68,12 +76,11 @@ public class Utility
 		return fileLine;
 	}
 	
-	/*
-	Count colons in line
-
-	@param words, a piece of a line to count colons from (if any)
-	
-	@return int, number of colons
+	//------------------------------------------------------------------------
+	/**
+	* Count colons in line
+	* @param words, a piece of a line to count colons from (if any)
+	* @return int, number of colons
 	*/
 	public static int countColons(String words)
 	{
@@ -85,12 +92,28 @@ public class Utility
 		
 		return numColons;
 	}
-
-	/*
-	Prints total question and how many error lines received
 	
-	@param lineNumber, the total number of lines in the file
-	@param errorLines, lines that contain errors
+	//------------------------------------------------------------------------
+	/**
+	 * Splits the string based on parameter delimiter
+	 * @param answers, string of answers to split
+	 * @param delimeter, split by
+	 * @return String[], array of split answers
+	 */
+	public static String[] splitByDelimeter(String answers, String delimiter)
+	{
+		String[] arrayOfStrings = null;
+		
+		arrayOfStrings = answers.split(delimiter);
+		
+		return arrayOfStrings;
+	}
+
+	//------------------------------------------------------------------------
+	/**
+	* Prints total question and how many error lines received
+	* @param lineNumber, the total number of lines in the file
+	* @param errorLines, lines that contain errors
 	*/
 	public static void printStatistics(int lineNumber, int errorLines)
 	{

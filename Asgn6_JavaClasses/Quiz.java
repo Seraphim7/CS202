@@ -5,111 +5,43 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 
+/**
+* <h1>Quiz.java</h1>
+* Contains the necessary items for doing various tasks with a quiz
+* such as loadQuestions, lineValidator, and deliverQuiz
+* <p>
+*
+* @author  Alex Novitchkov
+* @version 1.0
+* @since   3/2/2020
+*/
+
 public class Quiz
 {
 	ArrayList<Question> question;
 	String filename;
 	boolean filenameIsValid;
 	
+	//------------------------------------------------------------------------
+	/**
+	 * Creates a new File from the parameter dataFile
+	 * @param dataFile
+	 * @throws FileNotFoundException
+	 * @see FileNotFoundException
+	 */
 	Quiz(String dataFile) throws FileNotFoundException
 	{
 		question = new ArrayList<Question>();
 		
 		File file = new File(dataFile);
-		Scanner fileScanner = new Scanner(file);
-		
-		fileScanner.close();
 		
 		loadQuestions(file);
 	}
 	
-	private void loadQuestions(File file) throws FileNotFoundException
-	{
-		boolean valid;
-		String fileLine = null;
-		Scanner fileScanner = new Scanner(file);
-		int lineNumber = 0;
-		
-		while (fileScanner.hasNextLine())
-		{
-			lineNumber++;
-			
-			fileLine = fileScanner.nextLine();
-			
-			valid = lineValidator(fileLine, lineNumber);
-			
-			if (valid)
-			{
-				loadQuestionsBasedOnType(fileLine);
-			}
-		}
-		
-		fileScanner.close();
-	}
-
-	private void loadQuestionsBasedOnType(String fileLine)
-	{
-		String pipeDelimeter = "\\|";
-		Question newQuestion;
-		
-		String[] parsedFileLine = Utility.parseString(fileLine, pipeDelimeter);
-		
-		String type = parsedFileLine[0].toUpperCase();
-		String question = parsedFileLine[2];
-		String answerLine = parsedFileLine[3];
-		
-		if (type.equals("SA"))
-		{
-			newQuestion = new QuestionSA(question, answerLine);
-		}
-		else if (type.equals("TF"))
-		{
-			newQuestion = new QuestionTF(question, answerLine);
-		}
-		else
-		{
-			char correctAnswerLetter = parsedFileLine[4].charAt(0);
-			
-			correctAnswerLetter = Character.toUpperCase(correctAnswerLetter);
-			
-			newQuestion = new QuestionMC(question, answerLine, correctAnswerLetter);
-		}
-		
-		this.question.add(newQuestion);
-		newQuestion = null;
-	}
-
-	public boolean lineValidator(String fileLine, int lineNumber)
-	{
-		boolean valid = false;
-		String[] parsedFileLine = null;
-		String pipeDelimeter = "\\|";
-		boolean commentOrBlankLine = false;
-		
-		valid = true;
-				
-		fileLine = Utility.frontWhitespaceStripper(fileLine);
-		
-		commentOrBlankLine = Validation.commentOrBlankLine(fileLine);
-		
-		if (!commentOrBlankLine)
-		{
-			parsedFileLine = Utility.parseString(fileLine, pipeDelimeter); // You need to do this so that pipe symbol is the delimiter
-			valid = Validation.tokenByTokenValidator(parsedFileLine, fileLine, lineNumber);
-		}
-		else
-		{
-			valid = false; // Need some help on this naming
-		}
-		
-		return valid;
-	}
-
-	public int totalQuestions()
-	{
-		return question.size();
-	}
-	
+	//------------------------------------------------------------------------
+	/**
+	 * Delivers a quiz to the user
+	 */
 	public void deliverQuiz()
 	{
 		Iterator<Question> i = question.iterator();
@@ -144,7 +76,22 @@ public class Quiz
 		getCorrectCount();
 		getIncorrectCount();
 	}
+	
+	//------------------------------------------------------------------------
+	/**
+	 * Returns the total number of questions processed
+	 * @return the question container size
+	 */
+	public int totalQuestions()
+	{
+		return question.size();
+	}
 
+	//------------------------------------------------------------------------
+	/**
+	 * Returns the number of correct questions processed
+	 * @return the correct questions in the question container
+	 */
 	public int getCorrectCount()
 	{
 		int correctCount = 0;
@@ -164,6 +111,11 @@ public class Quiz
 		return correctCount;
 	}
 	
+	//------------------------------------------------------------------------
+	/**
+	 * Returns the number of incorrect questions processed
+	 * @return the incorrect questions in the question container
+	 */
 	public int getIncorrectCount()
 	{
 		int incorrectCount = 0;
@@ -183,6 +135,10 @@ public class Quiz
 		return incorrectCount;
 	}
 	
+	//------------------------------------------------------------------------
+	/**
+	 * Prints out the quiz header text
+	 */
 	public void printHeader()
 	{
 		System.out.println("Hope your brain’s warmed up, it’s Quiz Time!!!");
@@ -190,14 +146,107 @@ public class Quiz
 		System.out.println();
 	}
 	
+	//------------------------------------------------------------------------
+	/**
+	 * Prints out a correct message
+	 */
 	public void printCorrect()
 	{
 		System.out.println("Correct good job!");
 		System.out.println();
 	}
 	
+	//------------------------------------------------------------------------
+	/**
+	 * Prints out an incorrect message
+	 */
 	public void printIncorrect()
 	{
 		System.out.print("Sorry that is incorrect, the answer is ");
+	}
+	
+	//------------------------------------------------------------------------
+	private void loadQuestions(File file) throws FileNotFoundException
+	{
+		boolean valid;
+		String fileLine = null;
+		Scanner fileScanner = new Scanner(file);
+		int lineNumber = 0;
+		
+		while (fileScanner.hasNextLine())
+		{
+			lineNumber++;
+			
+			fileLine = fileScanner.nextLine();
+			
+			valid = lineValidator(fileLine, lineNumber);
+			
+			if (valid)
+			{
+				loadQuestionsBasedOnType(fileLine);
+			}
+		}
+		
+		fileScanner.close();
+	}
+
+	//------------------------------------------------------------------------
+	private void loadQuestionsBasedOnType(String fileLine)
+	{
+		String pipeDelimeter = "\\|";
+		Question newQuestion;
+		
+		String[] parsedFileLine = Utility.parseString(fileLine, pipeDelimeter);
+		
+		String type = parsedFileLine[0].toUpperCase();
+		String question = parsedFileLine[2];
+		String answerLine = parsedFileLine[3];
+		
+		if (type.equals("SA"))
+		{
+			newQuestion = new QuestionSA(question, answerLine);
+		}
+		else if (type.equals("TF"))
+		{
+			newQuestion = new QuestionTF(question, answerLine);
+		}
+		else
+		{
+			char correctAnswerLetter = parsedFileLine[4].charAt(0);
+			
+			correctAnswerLetter = Character.toUpperCase(correctAnswerLetter);
+			
+			newQuestion = new QuestionMC(question, answerLine, correctAnswerLetter);
+		}
+		
+		this.question.add(newQuestion);
+		newQuestion = null;
+	}
+
+	//------------------------------------------------------------------------
+	private boolean lineValidator(String fileLine, int lineNumber)
+	{
+		boolean valid = false;
+		String[] parsedFileLine = null;
+		String pipeDelimeter = "\\|";
+		boolean commentOrBlankLine = false;
+		
+		valid = true;
+				
+		fileLine = Utility.frontWhitespaceStripper(fileLine);
+		
+		commentOrBlankLine = Validation.commentOrBlankLine(fileLine);
+		
+		if (!commentOrBlankLine)
+		{
+			parsedFileLine = Utility.parseString(fileLine, pipeDelimeter); // You need to do this so that pipe symbol is the delimiter
+			valid = Validation.tokenByTokenValidator(parsedFileLine, fileLine, lineNumber);
+		}
+		else
+		{
+			valid = false; // Need some help on this naming
+		}
+		
+		return valid;
 	}
 }

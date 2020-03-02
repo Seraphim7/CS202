@@ -1,0 +1,22 @@
+SA|2|What is the capital of Italy|Rome
+TF|1|The capital of Germany is Munich|False
+MC|1|What is the capital of Ukraine|Minsk:Kyiv:Warsaw:Chisinau|B
+MA|1|Which of these border the Atlantic?|Maine:Kansas:Georgia:Utah|AC
+|2|What is the capital of Italy|Rome
+SA||What is the capital of Italy|Rome
+// Comment
+# Comment
+MC|What is the capital of Italy|Rome
+S|2|What is the capital of Italy|Rome
+SA|0|What is the capital of Italy|Rome
+SA|10|What is the capital of Italy|Rome
+MA|1|Which of these border the Atlantic?|Maine:Kansas:Georgia:Utah|AE
+MC|1|Which of these border the Atlantic?|Maine|AC
+/
+  #|SA
+	|MC
+ztf|1|What|B
+TF|1|What|true
+tF|1|What|true
+MC|2|Question|AMD;AM|a
+MC|2|Question|AMD:AM|a

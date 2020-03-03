@@ -141,7 +141,7 @@ public class Quiz
 	 */
 	public void printHeader()
 	{
-		System.out.println("Hope your brain’s warmed up, it’s Quiz Time!!!");
+		System.out.println("Hope your brain's warmed up, it's Quiz Time!!!");
 		System.out.println("After each answer is displayed, press enter to see the next question.");
 		System.out.println();
 	}

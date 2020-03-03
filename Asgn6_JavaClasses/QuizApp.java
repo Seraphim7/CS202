@@ -1,5 +1,6 @@
 
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
 * QuizApp.java
@@ -20,13 +21,30 @@ public class QuizApp
 	 */
 	public static void main(String[] args)
 	{
+		boolean userWantsToContinue = true;
+		boolean showIncorrectOnly = false;
+		Scanner userInput = new Scanner(System.in);
+		
 		try
 		{
 			if (args.length == 1)
 			{
 				Quiz newQuiz = new Quiz(args[0]);
 				
-				newQuiz.deliverQuiz();
+				while (userWantsToContinue)
+				{
+					newQuiz.deliverQuiz(showIncorrectOnly, userInput);
+					userWantsToContinue = Utility.userResponseToContinue(userInput);
+					
+					if (userWantsToContinue)
+					{
+						showIncorrectOnly = Utility.userResponseIfOnlyShowIncorrect(userInput);
+					}
+				}
+				
+				System.out.println("Quiting...");
+				
+				userInput.close();
 			}
 			else
 			{

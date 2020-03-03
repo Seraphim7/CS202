@@ -41,40 +41,48 @@ public class Quiz
 	//------------------------------------------------------------------------
 	/**
 	 * Delivers a quiz to the user
+	 * @param showIncorrectOnly, will only show the incorrect questions
 	 */
-	public void deliverQuiz()
+	public void deliverQuiz(boolean showIncorrectOnly, Scanner input)
 	{
 		Iterator<Question> i = question.iterator();
 		Question aQuestion;
 		String userAnswer;
 		boolean correctAnswer;
-		Scanner input = new Scanner(System.in);
+		int correct;
+		int incorrect;
+		int total;
 		
 		printHeader();
 		
 		while (i.hasNext())
 		{
 			aQuestion = (Question) i.next();
-			aQuestion.showQuestion();
-			userAnswer = input.nextLine();
-			correctAnswer = aQuestion.checkAnswer(userAnswer);
 			
-			if (correctAnswer)
+			if (!showIncorrectOnly || (!aQuestion.isCorrect() && showIncorrectOnly))
 			{
-				printCorrect();
-			}
-			else
-			{
-				printIncorrect();
-				aQuestion.showAnswer();
-				System.out.println();
+				aQuestion.showQuestion();
+				userAnswer = input.nextLine();
+				correctAnswer = aQuestion.checkAnswer(userAnswer);
+				
+				if (correctAnswer)
+				{
+					aQuestion.markCorrect();
+					printCorrect();
+				}
+				else
+				{
+					printIncorrect();
+					aQuestion.showAnswer();
+				}
 			}
 		}
 		
-		input.close();
+		correct = getCorrectCount();
+		incorrect = getIncorrectCount();
+		total = totalQuestions();
 		
-		getCorrectCount();
-		getIncorrectCount();
+		Utility.printOverallStatistics(correct, incorrect, total);
 	}
 	
 	//------------------------------------------------------------------------
@@ -193,7 +201,7 @@ public class Quiz
 	//------------------------------------------------------------------------
 	private void loadQuestionsBasedOnType(String fileLine)
 	{
-		String pipeDelimeter = "\\|";
+		String pipeDelimeter = "\\|"; // Need to do the \\ for it to recognize delimiter
 		Question newQuestion;
 		
 		String[] parsedFileLine = Utility.parseString(fileLine, pipeDelimeter);
@@ -239,12 +247,12 @@ public class Quiz
 		
 		if (!commentOrBlankLine)
 		{
-			parsedFileLine = Utility.parseString(fileLine, pipeDelimeter); // You need to do this so that pipe symbol is the delimiter
+			parsedFileLine = Utility.parseString(fileLine, pipeDelimeter);
 			valid = Validation.tokenByTokenValidator(parsedFileLine, fileLine, lineNumber);
 		}
 		else
 		{
-			valid = false; // Need some help on this naming
+			valid = false;
 		}
 		
 		return valid;

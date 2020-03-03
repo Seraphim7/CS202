@@ -41,6 +41,7 @@ public class QuestionTF extends Question
 	public void showAnswer()
 	{
 		System.out.println(answer);
+		System.out.println();
 	}
 	
 	//------------------------------------------------------------------------

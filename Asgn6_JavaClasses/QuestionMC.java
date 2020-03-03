@@ -51,6 +51,7 @@ public class QuestionMC extends Question
 	public void showAnswer()
 	{
 		System.out.println(answer);
+		System.out.println();
 	}
 	
 	//------------------------------------------------------------------------

@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 /**
 * Utility.java
@@ -84,7 +85,7 @@ public class Utility
 	{
 		int numColons = 0;
 		
-		String[] tokens = words.split("\\:");
+		String[] tokens = words.split("\\:"); // Need to do the \\ for it to recognize delimiter
 		
 		numColons = tokens.length;
 		
@@ -113,11 +114,151 @@ public class Utility
 	* @param lineNumber, the total number of lines in the file
 	* @param errorLines, lines that contain errors
 	*/
-	public static void printStatistics(int lineNumber, int errorLines)
+	public static void printErrorStatistics(int lineNumber, int errorLines)
 	{
 		System.out.print(lineNumber);
 		System.out.println(" questions processed");
 		System.out.print(errorLines);
 		System.out.println(" errors found");
+	}
+	
+	//------------------------------------------------------------------------
+	/**
+	 * Prints the number of correct answers, incorrect answers, and the total number of answers
+	 * @param correct
+	 * @param incorrect
+	 * @param total
+	 */
+	public static void printOverallStatistics(int correct, int incorrect, int total)
+	{
+		int percentage;
+		boolean good;
+		
+		System.out.print("You got ");
+		System.out.print(correct);
+		System.out.print(" of ");
+		System.out.print(total);
+		System.out.print(" correct: ");
+		
+		percentage = calculatePercentage(correct, total);
+		
+		System.out.print(percentage);
+		System.out.print("%.\t");
+		
+		good = goodOrBad(percentage);
+		
+		if (good)
+		{
+			System.out.println("Good job!");
+		}
+		else
+		{
+			System.out.println("Better study more!");
+		}
+	}
+
+	//------------------------------------------------------------------------
+	/**
+	 * calculates a percentage
+	 * @param correct, number of questions correct
+	 * @param total, number of total questions
+	 * @return int, percentage calculated rounded down
+	 */
+	public static int calculatePercentage(int correct, int total)
+	{
+		int percentage;
+		
+		percentage = (int) Math.floor((correct * 100.0) / total); // .0 is there to do floating point math
+		
+		return percentage;
+	}
+
+	//------------------------------------------------------------------------
+	/**
+	 * Prompts the user if they want to continue
+	 * @return boolean whether they want to continue
+	 */
+	public static boolean userResponseToContinue(Scanner userInput)
+	{
+		System.out.print("Do you want to continue? (Y/N): ");
+		String response = userInput.nextLine();
+		
+		System.out.println();
+		
+		response = response.toUpperCase();
+		
+		return validateUserControlResponse(response);
+	}
+	
+	//------------------------------------------------------------------------
+	/**
+	 * Prompts the user if they want to be shown only incorrect answers
+	 * @return boolean whether they want to be shown the incorrect answers
+	 */
+	public static boolean userResponseIfOnlyShowIncorrect(Scanner userInput)
+	{
+		System.out.print("Do you only want to be show the question(s) you got incorrect? (Y/N): ");
+		String response = userInput.nextLine();
+		
+		System.out.println();
+		
+		response = response.toUpperCase();
+		
+		return validateUserControlResponse(response);
+	}
+	
+	//------------------------------------------------------------------------
+	private static boolean goodOrBad(int percentage)
+	{
+		if (percentage >= 60)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+		
+	//------------------------------------------------------------------------
+	private static boolean validateUserControlResponse(String response)
+	{
+		response = response.toUpperCase();
+		
+		if (response.length() == 1)
+		{
+			if (response.equals("Y"))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else if (response.length() == 3)
+		{
+			if (response.equals("YES") || response.equals("YEA"))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else if (response.length() == 4)
+		{
+			if (response.equals("YEAH"))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

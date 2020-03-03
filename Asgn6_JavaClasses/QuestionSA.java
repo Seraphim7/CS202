@@ -41,6 +41,7 @@ public class QuestionSA extends Question
 	public void showAnswer()
 	{
 		System.out.println(answer);
+		System.out.println();
 	}
 	
 	//------------------------------------------------------------------------

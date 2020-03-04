@@ -9,7 +9,7 @@ import java.util.Scanner;
 *
 * @author  Alex Novitchkov
 * @version 1.0
-* @since   3/2/2020
+* @since   3/4/2020
 */
 
 public class QuizApp
@@ -27,6 +27,8 @@ public class QuizApp
 		
 		try
 		{
+			System.out.println();
+			
 			if (args.length == 1)
 			{
 				Quiz newQuiz = new Quiz(args[0]);
@@ -42,22 +44,28 @@ public class QuizApp
 					}
 				}
 				
-				System.out.println("Quiting...");
+				System.out.println("Quitting...");
 				
 				userInput.close();
 			}
+			else if (args.length == 2 && args[1].equals("-d"))
+			{
+				Quiz newQuiz = new Quiz(args[0]);
+				
+				newQuiz.dataDump();
+			}
 			else
 			{
-				System.err.println("Exactly 1 argument needs to be provided!");
+				System.err.println("2 (2nd argument -d optional) arguments needs to be provided!");
 			}
 		}
-		catch (FileNotFoundException err)
+		catch (NullPointerException error)
 		{
-			System.err.println("File is not found");
-		}
-		catch (NullPointerException err)
+			System.err.println(error.getMessage());
+		} 
+		catch (FileNotFoundException error)
 		{
-			System.err.println("Null pointer exception");
+			System.err.println(error.getMessage());
 		}
 	}
 }

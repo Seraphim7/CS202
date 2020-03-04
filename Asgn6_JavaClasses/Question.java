@@ -6,7 +6,7 @@
 *
 * @author  Alex Novitchkov
 * @version 1.0
-* @since   3/2/2020
+* @since   3/4/2020
 */
 
 abstract public class Question

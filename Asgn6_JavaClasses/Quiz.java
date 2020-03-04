@@ -13,12 +13,12 @@ import java.util.Scanner;
 *
 * @author  Alex Novitchkov
 * @version 1.0
-* @since   3/2/2020
+* @since   3/4/2020
 */
 
 public class Quiz
 {
-	ArrayList<Question> question;
+	ArrayList<Question> questions;
 	String filename;
 	boolean filenameIsValid;
 	
@@ -31,13 +31,26 @@ public class Quiz
 	 */
 	Quiz(String dataFile) throws FileNotFoundException
 	{
-		question = new ArrayList<Question>();
+		questions = new ArrayList<Question>();
 		
-		File file = new File(dataFile);
+		filename = dataFile;
 		
-		loadQuestions(file);
+		try
+		{
+			File file = new File(dataFile);
+			
+			loadQuestions(file);
+			
+			filenameIsValid = true;
+		}
+		catch (FileNotFoundException error)
+		{
+			filenameIsValid = false;
+			
+			throw(error);
+		}
 	}
-	
+
 	//------------------------------------------------------------------------
 	/**
 	 * Delivers a quiz to the user
@@ -45,7 +58,7 @@ public class Quiz
 	 */
 	public void deliverQuiz(boolean showIncorrectOnly, Scanner input)
 	{
-		Iterator<Question> i = question.iterator();
+		Iterator<Question> i = questions.iterator();
 		Question aQuestion;
 		String userAnswer;
 		boolean correctAnswer;
@@ -92,7 +105,7 @@ public class Quiz
 	 */
 	public int totalQuestions()
 	{
-		return question.size();
+		return questions.size();
 	}
 
 	//------------------------------------------------------------------------
@@ -103,7 +116,7 @@ public class Quiz
 	public int getCorrectCount()
 	{
 		int correctCount = 0;
-		Iterator<Question> i = question.iterator();
+		Iterator<Question> i = questions.iterator();
 		Question aQuestion = null;
 		
 		while (i.hasNext())
@@ -127,7 +140,7 @@ public class Quiz
 	public int getIncorrectCount()
 	{
 		int incorrectCount = 0;
-		Iterator<Question> i = question.iterator();
+		Iterator<Question> i = questions.iterator();
 		Question aQuestion = null;
 		
 		while (i.hasNext())
@@ -171,6 +184,33 @@ public class Quiz
 	public void printIncorrect()
 	{
 		System.out.print("Sorry that is incorrect, the answer is ");
+	}
+	
+	/**
+	 * Displays the raw questions and answers (if any) from the given file (if any)
+	 */
+	//------------------------------------------------------------------------
+	public void dataDump()
+	{
+		System.out.println();
+		
+		if (questions.isEmpty())
+		{
+			System.out.println("No questions given!");
+		}
+		else
+		{
+			Question aQuestion = null;
+			Iterator<Question> i = questions.iterator();
+			
+			while (i.hasNext())
+			{	
+				aQuestion = i.next();
+				
+				aQuestion.showQuestion();
+				aQuestion.showAnswer();
+			}
+		}
 	}
 	
 	//------------------------------------------------------------------------
@@ -227,7 +267,7 @@ public class Quiz
 			newQuestion = new QuestionMC(question, answerLine, correctAnswerLetter);
 		}
 		
-		this.question.add(newQuestion);
+		this.questions.add(newQuestion);
 		newQuestion = null;
 	}
 

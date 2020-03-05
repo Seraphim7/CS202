@@ -1,82 +1,104 @@
 
 import java.util.LinkedHashSet;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class SpellCheck
 {
 	LinkedHashSet<String> dictionary;
 	LinkedHashSet<String> textToSpellCheck;
+	TreeMap<String, Integer> misspelledWordCountContainer;
 	
 	SpellCheck()
 	{
 		dictionary = new LinkedHashSet<String>();
 		textToSpellCheck = new LinkedHashSet<String>();
+		misspelledWordCountContainer = new TreeMap<String, Integer>();
 	}
 	
-	public void deliverSpellChecker(String[] textParsedFileline, String[] dictionaryParsedFileline)
+	public void deliverSpellChecker(Scanner textFileInput, Scanner dictionaryFileInput)
 	{
-		boolean wordExistsInDictionary = true;
-		
-		read
-		
-		for (String token : dictionaryParsedFileline)
-		{
-			token = token.toLowerCase();
-			
-			setDictionaryByToken(token);
-		}
-		
-		System.out.print(dictionary.size());
-		
-		for (String token : textParsedFileline)
-		{
-			wordExistsInDictionary = checkTextWordAgainstDictionary(token);
-			
-			if (wordExistsInDictionary)
-			{
-				setTextByToken(token);
-			}
-			else
-			{
-				System.out.println(token);
-			}
-		}
+		setDictionary(dictionaryFileInput);
+		setText(textFileInput);
 	}
-	
-	public static String[] readFile(String filename, Scanner fileInput)
+
+	public void setDictionary(Scanner dictionaryFileInput)
 	{
-		String fileLine;
-		String[] parsedFileline = null;
-		
-		while (fileInput.hasNextLine())
+		String dictionaryFileline;
+		String[] dictionaryParsedFileline = null;
+
+		while (dictionaryFileInput.hasNextLine())
 		{
-			fileLine = fileInput.nextLine();
+			dictionaryFileline = dictionaryFileInput.nextLine();
 			
-			parsedFileline = Utility.splitByDelimeter(fileLine, " ");
+			dictionaryParsedFileline = Utility.splitByDelimeter(dictionaryFileline, " ");
 			
-			for (String token : parsedFileline)
+			for (String token : dictionaryParsedFileline)
 			{
+				token = token.toLowerCase();
+				token = invalidCharacterStripper(token);
 				
+				dictionary.add(token);
 			}
 		}
+	}
+	
+	public void setText(Scanner textFileInput)
+	{
+		String textFileline;
+		String[] textParsedFileline = null;
+		Integer i = 0;
 		
-		return parsedFile;
+		while (textFileInput.hasNextLine())
+		{
+			textFileline = textFileInput.nextLine();
+			
+			textParsedFileline = Utility.splitByDelimeter(textFileline, " ");
+			
+			for (String token : textParsedFileline)
+			{
+				token = token.toLowerCase();
+				token = invalidCharacterStripper(token);
+				
+				if (checkTextWordAgainstDictionary(token))
+				{
+					textToSpellCheck.add(token);
+				}
+				else
+				{	
+					if (misspelledWordCountContainer.containsKey(token))
+					{
+						i = misspelledWordCountContainer.get(token);
+						misspelledWordCountContainer.remove(token);
+					}
+					
+					misspelledWordCountContainer.put(token, i + 1);
+				}
+			}
+		}
 	}
-	
-	public void setDictionaryByToken(String token)
-	{
-		dictionary.add(token);
-	}
-	
-	public void setTextByToken(String token)
-	{
-		textToSpellCheck.add(token);
-	}
-	
+
 	public boolean checkTextWordAgainstDictionary(String textToken)
 	{
 		textToken = textToken.toLowerCase();
 		
 		return dictionary.contains(textToken);
+	}
+	
+	public String invalidCharacterStripper(String token)
+	{
+		char charAtTokenIndex;
+		
+		for (int i = 0; i < token.length(); i++)
+		{
+			charAtTokenIndex = token.charAt(i);
+			
+			if (charAtTokenIndex < 'A' || charAtTokenIndex > 'z')
+			{
+				token = token.replace(charAtTokenIndex, ' ');
+			}
+		}
+		
+		return token;
 	}
 }

@@ -11,8 +11,6 @@ public class SpellCheckApp
 			String textFilename = null;
 			String dictionaryFilename = null;
 			Scanner userInput = new Scanner(System.in);
-			String[] parsedTextFileline = null;
-			String[] parsedDictionaryFileline = null;
 			SpellCheck checker = new SpellCheck();
 			
 			if (args.length > 2)
@@ -27,24 +25,20 @@ public class SpellCheckApp
 					dictionaryFilename = "words.txt";
 				}
 				
-				File file = new File(textFilename);
-				Scanner fileInput = new Scanner(file);
+				File textFile = new File(textFilename);
+				Scanner textFileInput = new Scanner(textFile);
 				
-				parsedTextFileline = Utility.readFile(textFilename, fileInput);
+				File dictionaryFile = new File(dictionaryFilename);
+				Scanner dictionaryFileInput = new Scanner(dictionaryFile);
 				
-				file = new File(dictionaryFilename);
-				fileInput = new Scanner(file);
+				checker.deliverSpellChecker(textFileInput, dictionaryFileInput);
 				
-				parsedDictionaryFileline = Utility.readFile(dictionaryFilename, fileInput);
-				
-				fileInput.close();
-				
-				checker.deliverSpellChecker(parsedTextFileline, parsedDictionaryFileline);
+				textFileInput.close();
+				dictionaryFileInput.close();
 			}
 		}
 		catch (FileNotFoundException error)
 		{
-			System.err.println("File is not found");
 			System.err.println(error.getMessage());
 		}
 	}

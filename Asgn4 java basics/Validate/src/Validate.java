@@ -132,7 +132,6 @@ public class Validate
 			if (fileLine.charAt(i) == '|')
 			{
 				whitespaceInFront = false;
-				nonWhitespaceInFront = false;
 			}
 			else
 			{

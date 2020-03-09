@@ -327,7 +327,7 @@ public class Validation
 	{
 		if (colonCount < 2 || colonCount > 10)
 		{
-			Utility.printErrorLineNumber(fileLine, lineNumber, "Every line must have 3-9 answers!");
+			Utility.printErrorLineNumber(fileLine, lineNumber, "Every line must have 2-10 answers!");
 			return false;
 		}
 		

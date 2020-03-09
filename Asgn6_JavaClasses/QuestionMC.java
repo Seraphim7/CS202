@@ -6,7 +6,7 @@
 *
 * @author  Alex Novitchkov
 * @version 1.0
-* @since   3/4/2020
+* @since   3/8/2020
 */
 
 import java.util.ArrayList;
@@ -79,6 +79,15 @@ public class QuestionMC extends Question
 	public void markCorrect()
 	{
 		correct = true;
+	}
+
+	//------------------------------------------------------------------------
+	/**
+	 * Marks whether question was answered incorrectly
+	 */
+	public void markIncorrect()
+	{
+		correct = false;
 	}
 
 	//------------------------------------------------------------------------

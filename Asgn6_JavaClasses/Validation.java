@@ -6,7 +6,7 @@
 *
 * @author  Alex Novitchkov
 * @version 1.0
-* @since   3/4/2020
+* @since   3/8/2020
 */
 
 public class Validation
@@ -286,10 +286,18 @@ public class Validation
 	private static boolean validateCorrectAnswerLetter(String correctAnswerLetter, int colonCount, String fileLine, int lineNumber)
 	{
 		boolean valid = true;
+		int correctAnswerNumber;
 		
 		correctAnswerLetter = correctAnswerLetter.toUpperCase();
-		
-		int correctAnswerNumber = correctAnswerLetter.charAt(0) & 0x3f; // Converting uppercase letters to number (1 - 9)
+
+		if (correctAnswerLetter.charAt(0) > 'H')
+		{
+			correctAnswerNumber = 10;
+		}
+		else
+		{
+			correctAnswerNumber = correctAnswerLetter.charAt(0) & 0x3f; // Converting uppercase letters to number (1 - 9)
+		}
 		
 		if (colonCount < correctAnswerNumber)
 		{
@@ -317,7 +325,7 @@ public class Validation
 	//------------------------------------------------------------------------
 	private static boolean checkValidMultipleChoiceColonCount(int colonCount, String fileLine, int lineNumber)
 	{
-		if (colonCount < 3 || colonCount > 9)
+		if (colonCount < 2 || colonCount > 10)
 		{
 			Utility.printErrorLineNumber(fileLine, lineNumber, "Every line must have 3-9 answers!");
 			return false;

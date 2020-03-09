@@ -6,7 +6,7 @@
 *
 * @author  Alex Novitchkov
 * @version 1.0
-* @since   3/4/2020
+* @since   3/8/2020
 */
 
 abstract public class Question
@@ -40,6 +40,12 @@ abstract public class Question
 	 * Marks whether question was answered correctly
 	 */
 	abstract public void markCorrect();
+
+	//------------------------------------------------------------------------
+	/**
+	 * Marks whether question was answered incorrectly
+	 */
+	abstract public void markIncorrect();
 	
 	//------------------------------------------------------------------------
 	/**

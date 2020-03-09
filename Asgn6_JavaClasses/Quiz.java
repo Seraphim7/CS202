@@ -13,7 +13,7 @@ import java.util.Scanner;
 *
 * @author  Alex Novitchkov
 * @version 1.0
-* @since   3/4/2020
+* @since   3/8/2020
 */
 
 public class Quiz
@@ -55,6 +55,7 @@ public class Quiz
 	/**
 	 * Delivers a quiz to the user
 	 * @param showIncorrectOnly, will only show the incorrect questions
+	 * @param input, scanner input
 	 */
 	public void deliverQuiz(boolean showIncorrectOnly, Scanner input)
 	{
@@ -65,6 +66,7 @@ public class Quiz
 		int correct;
 		int incorrect;
 		int total;
+		int iterator = 0;
 		
 		printHeader();
 		
@@ -85,9 +87,14 @@ public class Quiz
 				}
 				else
 				{
+					aQuestion.markIncorrect();
 					printIncorrect();
 					aQuestion.showAnswer();
 				}
+
+				questions.set(iterator, aQuestion);
+
+				iterator++;
 			}
 		}
 		

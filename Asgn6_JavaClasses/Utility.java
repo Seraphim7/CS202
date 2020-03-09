@@ -7,7 +7,7 @@ import java.util.Scanner;
 *
 * @author  Alex Novitchkov
 * @version 1.0
-* @since   3/4/2020
+* @since   3/8/2020
 */
 
 public class Utility
@@ -125,9 +125,9 @@ public class Utility
 	//------------------------------------------------------------------------
 	/**
 	 * Prints the number of correct answers, incorrect answers, and the total number of answers
-	 * @param correct
-	 * @param incorrect
-	 * @param total
+	 * @param correct, number of questions correct
+	 * @param incorrect, number of questions incorrect
+	 * @param total, number of total questions
 	 */
 	public static void printOverallStatistics(int correct, int incorrect, int total)
 	{
@@ -176,6 +176,7 @@ public class Utility
 	//------------------------------------------------------------------------
 	/**
 	 * Prompts the user if they want to continue
+	 * @param userInput, scanner as input
 	 * @return boolean whether they want to continue
 	 */
 	public static boolean userResponseToContinue(Scanner userInput)
@@ -193,6 +194,7 @@ public class Utility
 	//------------------------------------------------------------------------
 	/**
 	 * Prompts the user if they want to be shown only incorrect answers
+	 * @param userInput, scanner as input
 	 * @return boolean whether they want to be shown the incorrect answers
 	 */
 	public static boolean userResponseIfOnlyShowIncorrect(Scanner userInput)

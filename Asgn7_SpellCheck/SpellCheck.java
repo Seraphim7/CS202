@@ -1,4 +1,15 @@
+/**
+* SpellCheck.java
+* Spell check program
+* <p>
+*
+* @author  Alex Novitchkov
+* @version 1.0
+* @since   3/9/2020
+*/
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -8,8 +19,9 @@ public class SpellCheck
 {
 	LinkedHashSet<String> dictionary;
 	LinkedHashSet<String> textToSpellCheck;
-	TreeMap<String, Integer> misspelledWordCountContainer;
+	TreeMap<String, Integer> misspelledWordCountContainer; // Container of misspelled words with the number of times of occurrence
 	
+	//------------------------------------------------------------------------
 	SpellCheck()
 	{
 		dictionary = new LinkedHashSet<String>();
@@ -17,86 +29,108 @@ public class SpellCheck
 		misspelledWordCountContainer = new TreeMap<String, Integer>();
 	}
 	
-	public void deliverSpellChecker(Scanner textFileInput, Scanner dictionaryFileInput)
+	//------------------------------------------------------------------------
+	/**
+	 * Controller of the program
+	 * @param args, arguments to the program
+	 */
+	public static void main(String[] args)
 	{
-		setDictionary(dictionaryFileInput);
-		setText(textFileInput);
+		String textFilename = null;
+		String dictionaryFilename = null;
+		Scanner userInput = new Scanner(System.in);
+		SpellCheck spellCheck = new SpellCheck();
 		
-		printMisspelledWordsAlphabetically();
-	}
-
-	public void setDictionary(Scanner dictionaryFileInput)
-	{
-		String dictionaryFileline;
-		String[] dictionaryParsedFileline = null;
-
-		while (dictionaryFileInput.hasNextLine())
+		try
 		{
-			dictionaryFileline = dictionaryFileInput.nextLine();
-			
-			dictionaryParsedFileline = Utility.splitByDelimeter(dictionaryFileline, " ");
-			
-			for (String token : dictionaryParsedFileline)
+			if (args.length > 2)
 			{
-				token = token.toLowerCase();
-				token = invalidCharacterStripper(token);
+				System.err.println("Must provide 0-2 arguments!");
+			}
+			else
+			{
+				if (args.length == 0 || args.length == 1)
+				{
+					System.out.print("Enter the filename of the text to spell check: ");
+					textFilename =  userInput.nextLine();
+					
+					dictionaryFilename = "words.txt";
+				}
 				
-				dictionary.add(token);
+				File textFile = new File(textFilename);
+				File dictionaryFile = new File(dictionaryFilename);
+				
+				Scanner fileInput = new Scanner(textFile);
+				Scanner dictionaryFileInput = new Scanner(dictionaryFile);
+			
+				spellCheck.setFile(dictionaryFileInput, 1);
+				spellCheck.setFile(fileInput, 2);
+				
+				spellCheck.printMisspelledWordsAlphabetically();
+				
+				userInput.close();
+				fileInput.close();
+				dictionaryFileInput.close();
 			}
 		}
-	}
-	
-	public void setText(Scanner textFileInput)
-	{
-		String textFileline;
-		String[] textParsedFileline = null;
-		Integer i = 0;
-		
-		while (textFileInput.hasNextLine())
+		catch (FileNotFoundException error)
 		{
-			textFileline = textFileInput.nextLine();
+			System.err.println(error.getMessage());
+		}
+	}
+
+	//------------------------------------------------------------------------
+	private void setFile(Scanner fileInput, int i)
+	{
+		int wordPlaceInContainer = 0;
+		String fileline;
+		String[] parsedFileline = null;
+
+		while (fileInput.hasNextLine())
+		{
+			fileline = fileInput.nextLine();
 			
-			if (!textFileline.isEmpty())
+			parsedFileline = fileline.split(" ");
+			
+			for (String token : parsedFileline)
 			{
-				textParsedFileline = Utility.splitByDelimeter(textFileline, " ");
+				token = token.toLowerCase();
 				
-				for (String token : textParsedFileline)
+				if (i == 1)
 				{
-					token = token.toLowerCase();
+					dictionary.add(token);
+				}
+				else
+				{
 					token = invalidCharacterStripper(token);
+					token = token.stripLeading();
+					token = token.stripTrailing();
 					
-					if (checkTextWordAgainstDictionary(token))
+					textToSpellCheck.add(token);
+					
+					if (!dictionary.contains(token))
 					{
-						textToSpellCheck.add(token);
-					}
-					else
-					{	
-						if (misspelledWordCountContainer.containsKey(token))
-						{
-							i = misspelledWordCountContainer.get(token);
-							misspelledWordCountContainer.remove(token);
-						}
+						textToSpellCheck.remove(token);
 						
-						misspelledWordCountContainer.put(token, i + 1);
+						if (!misspelledWordCountContainer.containsKey(token))
+						{
+							misspelledWordCountContainer.put(token, 1);
+						}
+						else
+						{
+							wordPlaceInContainer = misspelledWordCountContainer.get(token);
+							misspelledWordCountContainer.put(token, wordPlaceInContainer + 1);
+						}
 					}
 				}
 			}
 		}
 	}
-
-	public boolean checkTextWordAgainstDictionary(String textToken)
-	{
-		textToken = textToken.toLowerCase();
-		
-		textToken = textToken.stripLeading();
-		textToken = textToken.stripTrailing();
-		
-		return dictionary.contains(textToken);
-	}
 	
-	public String invalidCharacterStripper(String token)
+	//------------------------------------------------------------------------
+	private String invalidCharacterStripper(String token)
 	{
-		char charAtTokenIndex;
+		char charAtTokenIndex = ' ';
 		
 		for (int i = 0; i < token.length(); i++)
 		{
@@ -106,17 +140,13 @@ public class SpellCheck
 			{
 				token = token.replace(charAtTokenIndex, ' ');
 			}
-			
-			if (i == token.length() - 1 && (charAtTokenIndex == ',' || charAtTokenIndex == '!' || charAtTokenIndex == '?' || charAtTokenIndex == '.'))
-			{
-				token = token.substring(0, token.length() - 1);
-			}
 		}
 		
 		return token;
 	}
 	
-	public void printMisspelledWordsAlphabetically()
+	//------------------------------------------------------------------------
+	private void printMisspelledWordsAlphabetically()
 	{
 		String entryKey;
 		Integer entryValue;
